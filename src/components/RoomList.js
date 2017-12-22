@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as firebase from 'firebase';
+
 
 class RoomList extends Component {
 
@@ -38,17 +38,19 @@ class RoomList extends Component {
   render() {
     return(
       <div>
-      <form onSubmit={ (e) => this.createRoom (e)}>
-        <input type="text" value={ this.state.newRoomName } onChange={ (e) => this.handleChange(e)} />
-        <input type="submit" value="Create Room"/>
-      </form>
-      <ul>
-        {this.state.rooms.map( (room, key) => (
-          <li key={room.key}>
-            {room.name}
-          </li>
-        ))}
-      </ul>
+        <form onSubmit={ (e) => this.createRoom (e)}>
+          <input type="text" value={ this.state.newRoomName } onChange={ (e) =>
+          this.handleChange(e)} />
+          <input type="submit" value="Create Room"/>
+        </form>
+        <ul>
+          {this.state.rooms.map( (room, key) => (
+            <li key={room.key}>
+              <button value={room.name} onClick={ (e) =>
+              this.props.setActiveRoom(e)}>{room.name}</button>
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }
