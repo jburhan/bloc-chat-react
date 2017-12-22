@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+
 class MessageList extends Component {
 
   constructor(props) {
@@ -23,10 +24,10 @@ class MessageList extends Component {
       <div>
         <h2> Messages: </h2>
         <ul>
-          {this.state.messages.filter(message => message.roomId === this.props.activeRoom)
+          {this.state.messages.filter(message => message.roomId == this.props.activeRoom.key)
           .map((message,key) => (
           <li key={message.key}>
-            {message.content}
+            {message.username}: {message.content} <br /> {message.sentAt}
           </li>
           ))}
         </ul>
