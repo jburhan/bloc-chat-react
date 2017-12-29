@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RoomList from './components/RoomList';
 import MessageList from './components/MessageList';
+import User from './components/User';
 import './App.css';
 import * as firebase from 'firebase';
 
@@ -19,23 +20,32 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeRoom: 'No Room Selected Yet'
+      activeRoom: 'No Room Selected Yet',
+      activeUser: 'Guest'
     };
+    this.setActiveRoom = this.setActiveRoom.bind(this);
   }
 
-  setActiveRoom(e) {
-    this.setState({ activeRoom: e.target.value })
+  setActiveRoom(room) {
+    this.setState({ activeRoom: room })
+  }
+
+  setUser(user) {
+    this.setState( { activeUser : user.displayName})
   }
 
   render() {
     return (
       <div>
-        <RoomList
-        firebase={firebase}
-        activeRoom={this.state.activeRoom}
-        setActiveRoom={(e) => this.setActiveRoom(e)}/>
-        <h1> Active Room: { this.state.activeRoom} </h1>
+        <User firebase={firebase} setUser={(user) => this.setUser(user)}/>
+
+        <RoomList firebase={firebase} activeRoom={this.state.activeRoom}
+        setActiveRoom={this.setActiveRoom}/>
+
+        <h1> Active Room: { this.state.activeRoom.name} </h1>
+
         <MessageList firebase={firebase} activeRoom={this.state.activeRoom}/>
+
       </div>
     );
   }
