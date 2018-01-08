@@ -22,6 +22,11 @@ class RoomList extends Component {
     this.setState({ newRoomName: '' });
   }
 
+  deleteRoom(e) {
+    e.preventDefault();
+    this.roomsRef.child(e.target.value).remove();
+  }
+
   handleChange(e) {
     this.setState({ newRoomName: e.target.value})
   }
@@ -33,7 +38,13 @@ class RoomList extends Component {
       this.setState({rooms: this.state.rooms.concat( room )});
     });
 
-
+    this.roomsRef.on('child_removed', snapshot => {
+      const room = snapshot.val();
+      room.key = snapshot.key;
+      this.setState({ rooms: this.state.rooms.filter( function(value) {
+        return value.key !== room.key;
+      }) })
+    });
   }
 
   selectRoom(room){
@@ -43,16 +54,16 @@ class RoomList extends Component {
 
   render() {
     return(
-      <div>
-        <form onSubmit={ (e) => this.createRoom (e)}>
-          <input type="text" value={ this.state.newRoomName } onChange={ (e) =>
-          this.handleChange(e)} />
-          <input type="submit" value="Create Room"/>
+      <div id="room-list">
+        <form id="create-room" onSubmit={ (e) => this.createRoom (e)}>
+         <input type="text" value={ this.state.newRoomName } onChange={ (e) =>
+          this.handleChange(e)} placeholder="Create Room" />
         </form>
-        <ul>
+        <ul id="rooms">
           {this.state.rooms.map( (room, key) => (
-            <li key={room.key}>
-              <button value={room.name} onClick={ (e) => this.selectRoom(room)}>{room.name}</button>
+            <li className="room" key={room.key}>
+              <button id="room-name" value={room.name} onClick={ (e) => this.selectRoom(room)}>{room.name}</button>
+              <button id="delete-room"value={room.key} onClick={ (e) => this.deleteRoom(e)}> Delete </button> 
             </li>
           ))}
         </ul>

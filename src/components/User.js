@@ -15,18 +15,19 @@ class User extends Component {
 
   signOut() {
     this.props.firebase.auth().signOut();
-    this.props.setUser({displayName: "Signed Out"});
+    this.props.setUser({displayName: null });
   }
 
   render() {
     return (
-      <div>
-
-        <button onClick={ () => this.signIn() }> Sign In </button>
-        <button onClick={ () => this.signOut() }> Sign Out </button>
-        <p> Current User: {this.props.activeUser}</p>
-
-      </div>
+      <header>
+        <nav>
+          <button className="user-button" id="sign-in" onClick={ () => this.signOut() }> Sign Out </button>
+          <button className="user-button" id="sign-out" onClick={ () => this.signIn() }> Sign In </button>
+          <h1 id="title"> Bloc Chat Room</h1>
+        </nav>
+        <p id="current-user" > Current User: {this.props.activeUser}</p>
+      </header>
     );
   }
 }
